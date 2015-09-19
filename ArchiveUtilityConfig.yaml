@@ -88,7 +88,7 @@ logging:
       class: logging.handlers.TimedRotatingFileHandler
       level: !!python/name:logging.NOTSET
       formatter: simpleFormatter
-      filename: Archive_Script.log
+      filename: ArchiveScript.log
       when: 'midnight'
       # for details on rotation parameters, see:
       # https://docs.python.org/2/library/logging.handlers.html
