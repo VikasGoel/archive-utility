@@ -17,7 +17,7 @@ from ArchiveDirectory import ArchiveDirectory
 
 def main():
     # Read configuration from YAML
-    with open('ArchiveJobConfig.yaml', 'r') as stream:
+    with open('ArchiveUtilityConfig.yaml', 'r') as stream:
         global_config = yaml.load(stream)
 
     logging.config.dictConfig(global_config['logging'])
