@@ -20,6 +20,7 @@ archive_app_config:
 #     include_pattern: file pattern to include (defaults to '*')
 #           for details on patterns, see https://docs.python.org/2/library/fnmatch.html
 #     retention_days: integer number of days (defaults to 10, use -1 to retain forever)
+#     encrypt: True/False (defaults to False)
 archives:
   - name: First
     source: ./example/source1
@@ -34,6 +35,7 @@ archives:
     include_pattern: '*.csv'
     retention_days: -1
     action: Copy
+    encrypt: True
 
 # ------------------------------------------------------------------------------------------
 # Config for logging
