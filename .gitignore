@@ -1,0 +1,21 @@
+# Compiled source #
+###################
+*.pyc
+
+# Log files #
+#############
+*.log
+
+# Unnecessary examples #
+########################
+example/dest*
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
