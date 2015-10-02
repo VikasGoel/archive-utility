@@ -1,8 +1,6 @@
-# Script to do something
+# A utility to archive files from a source directory to a target directory with flexible configuration
 #
-# Do something:
-# - step 1
-# - step 2
+# Details on the configuration options can be found in the YAML configuration file
 #
 # Author: Timothy Ubbens
 # Date: Aug 2015
@@ -19,69 +17,60 @@ def main():
     # Read configuration from YAML
     with open('ArchiveUtilityConfig.yaml', 'r') as stream:
         global_config = yaml.load(stream)
-
+    # Create logger with parameters from YAML file
     logging.config.dictConfig(global_config['logging'])
-    # Create logger
     logger = logging.getLogger('myapp.main')
-
+    # Create list of items to archive from YAML file
     list_of_archive_args = global_config['archives']
-    #print list_of_archives
-
-    logger.info('---------- PROCESS STARTING ----------')
-
+    logger.info('---------- ARCHIVE PROCESS STARTING ----------')
     # Create list of archive objects
     archive_objects = []
-
+    # Get command line arguments
     command_line_args = sys.argv[1:]
-    print command_line_args
-    print len(command_line_args)
+    logger.debug('Command line arguments: %s' % command_line_args)
+    logger.debug('Number of command line arguments: %r' % len(command_line_args))
     process_archive_args = []
     index = -1;
     if len(command_line_args) > 0:
-        print 'using only configs where name matches a command line arg'
+        logger.debug('Using only configs where name matches a command line arg')
         for arg_name in command_line_args:
-            # find the index of each arg_name in the list_of_archive_args
+            # Find the index of each arg_name in the list_of_archive_args
             index = find(list_of_archive_args, 'name', arg_name)
-            # if item is found, then add it to the temp_archive_args list, else produce an error
+            # If item is found, then add it to the temp_archive_args list, else produce an error
             if index >= 0:
                 process_archive_args.append(list_of_archive_args[index])
             else:
-                logger.error('couldn\'t find %s in yaml file', arg_name)
+                logger.error('Couldn\'t find %s in yaml file', arg_name)
     else:
-        print 'no command line args received - all configs in yaml file used'
+        logger.debug('No command line args received - all configs in YAML file used')
         process_archive_args = list_of_archive_args
 
+    # If there are items to archive
     if len(process_archive_args) > 0:
-        # create a list of all the objects to be processed
+        # Create a list of all the objects to be processed
         for archive_args in process_archive_args:
-            logger.debug( '%r' % archive_args )
+            logger.debug('%r' % archive_args )
             archive_objects.append(ArchiveDirectory(**archive_args))
-
         # Execute archive operation
         for archive_object in archive_objects:
-
+            # If archive item is valid, then archive it and enforce retention
             if archive_object.validate_config() and archive_object.validate_access():
-                status = archive_object.archive()
-                logger.debug('Returned from Archive operation: %s', status)
+                logger.info('Archiving %s', archive_object.name)
+                archive_object.archive()
+                logger.debug('Returned from Archive operation')
                 status = archive_object.enforce_retention()
                 logger.debug('Returned from Retention operation: %s', status)
             else:
                 logger.warning('Invalid parameters or access on %s', archive_object.name)
-    # else there were no archive objects to process
+    # Else there were no archive objects to process
     else:
-        print 'nothing to archive'
+        logger.warning('There was nothing to archive')
 
-
-
-    #logger.debug('This message should go to the log file')
-    #logger.info('So should this')
-    #logger.warning('And this, too')
-    #logger.error('And this, too')
-
-    logger.info('---------- PROCESS ENDING ----------')
+    logger.info('---------- ARCHIVE PROCESS ENDING ----------')
 
 
 def find(list_to_search, key, value):
+    """Finds the index of an item in a list"""
     for i, dic in enumerate(list_to_search):
         if dic[key] == value:
             return i

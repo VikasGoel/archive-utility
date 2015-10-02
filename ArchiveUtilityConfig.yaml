@@ -1,25 +1,27 @@
-# Config  for my application
-# --------------------------
+# ArchiveUtility Configuration
+# -----------------------------
 archive_app_config:
-  # Place app config here if necessary
-
 # Create backups:
 # Parameters:
 #   Required:
-# TODO proper naming and logging throughout
-#     name: string name
-# TODO check that UNC is okay
+#     name: string name (names should be unique)
 #     source: a directory (absolute or relative), can be a UNC path
-# TODO check that UNC is okay
 #     destination: a directory (absolute or relative), can be a UNC path
 #   Optional:
 #     action: Move/Copy/UniqueCopy (defaults to move, UniqueCopy prefixes filenames
 #           copied with date/time stamp to ensure files copied are always unique)
-# TODO document move/copy/uniquecopy actions - ex: move will create uniquecopy if file exists already
+#           Move: Moves the files from the source to the destination. Will move
+#             the file to a unique filename if the same file exists already
+#             (unique filename is date/timestamp + name of source file)
+#           Copy: Copies files from the source to destination. Copies only files
+#             that have a different last modified timestamp than existing files
+#             in the destination
+#           UniqueCopy: Copies all files to a unique filename. Filename is
+#             date/timestamp + name of source file
 #     recursion_depth: integer number of levels to recurse (defaults to 0 for none)
 #     include_pattern: file pattern to include (defaults to '*')
 #           for details on patterns, see https://docs.python.org/2/library/fnmatch.html
-#     retention_days: integer number of days (defaults to 10, use -1 to retain forever)
+#     retention_days: integer number of days to retain files (defaults to 10, use -1 to retain forever)
 #     encrypt: True/False (defaults to False)
 archives:
   - name: First
@@ -59,7 +61,7 @@ logging:
       qualname: myapp.lib
       propagate: false
     myapp.main:
-      level: !!python/name:logging.DEBUG
+      level: !!python/name:logging.INFO
       handlers: [console]
       qualname: myapp.main
       propagate: no
