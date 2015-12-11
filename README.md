@@ -1,5 +1,7 @@
 # Archive Utility
-A highly customizable archive utility.  This utility moves files from a source to a target directory.
+A highly customizable archive utility.  This utility moves files from source to a target directories.
+
+Use the ArchiveUtilityConfig.yaml file to configure how the utility will run and what sources and targets it will operate on.
 
 Source: a directory (absolute or relative), can be a UNC path
 
